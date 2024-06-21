@@ -13,27 +13,39 @@
 # Spock wins over: scissors, rock
 # Spock loses under: paper, lizard
 
-VALID_CHOICES = ['rock', 'paper', 'scissors', 'lizard', 'spock']
+VALID_CHOICES = ['r', 'p', 's', 'l', 'v']
 
-GAME_LOGIC_HASH = {'scissors' => ['paper', 'lizard'],
-                    'rock' => ['scissors', 'lizard'],
-                    'paper' => ['rock', 'spock'],
-                    'lizard' => ['spock', 'paper'],
-                    'spock' => ['scissors', 'rock']}
+USER_INPUT_TRANSLATION = {'r' => 'rock', 'p' => 'paper', 's' => 'scissors',
+                          'l' => 'lizard', 'v' => 'Spock'}
+
+GAME_LOGIC_HASH = {'s' => ['p', 'l'],
+                    'r' => ['s', 'l'],
+                    'p' => ['r', 'v'],
+                    'l' => ['v', 'p'],
+                    'v' => ['s', 'r']}
 
 def prompt(message)
   Kernel.puts("=> #{message}")
 end
 
+def print_game_tutorial
+  puts <<-TUTORIAL
+  In this game, scissors cuts paper covers rock crushes lizard poisons Spock
+  smashes scissors decapitates lizard eats paper disproves Spock vaporizes 
+  rock crushes scissors.
+
+  You will type the first letter of your choice, except for Spock, where
+  you will type "v" because he is a Vulcan!
+
+  So type s for scissors, r for rock, p for paper, l for lizard, and v for Spock!
+
+  Have fun!
+  TUTORIAL
+end
+
 def win?(first, second)
   GAME_LOGIC_HASH[first].include?(second)
 end
-
-# def win?(first, second)
-#  (first == 'rock' && second == 'scissors') ||
-#    (first == 'paper' && second == 'rock') ||
-#    (first == 'scissors' && second == 'paper')
-# end
 
 def display_results(player, computer)
   if win?(player, computer)
@@ -43,6 +55,16 @@ def display_results(player, computer)
   else
     prompt("It's a tie!")
   end
+end
+
+prompt("Welcome to Rock Paper Scissors Lizard Spock!")
+prompt("Would you like a game tutorial?")
+tutorial_preference = gets.chomp
+
+if tutorial_preference.downcase.start_with?('y')
+  print_game_tutorial
+else
+  prompt('Okay, on to the game!')
 end
 
 loop do
@@ -60,7 +82,7 @@ loop do
 
   computer_choice = VALID_CHOICES.sample
 
-  prompt("You chose: #{choice}; Computer chose: #{computer_choice}")
+  prompt("You chose: #{USER_INPUT_TRANSLATION[choice]}; Computer chose: #{USER_INPUT_TRANSLATION[computer_choice]}")
 
   display_results(choice, computer_choice)
 
