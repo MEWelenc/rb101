@@ -13,16 +13,14 @@
 # Spock wins over: scissors, rock
 # Spock loses under: paper, lizard
 
-VALID_CHOICES = ['r', 'p', 's', 'l', 'v']
+VALID_MOVES = ['rock', 'paper', 'scissors', 'lizard', 'spock']
+VALID_MOVE_ABBREVIATIONS = ['r', 'p', 's', 'l', 'sp']
 
-USER_INPUT_TRANSLATION = {'r' => 'rock', 'p' => 'paper', 's' => 'scissors',
-                          'l' => 'lizard', 'v' => 'Spock'}
-
-GAME_LOGIC_HASH = {'s' => ['p', 'l'],
-                    'r' => ['s', 'l'],
-                    'p' => ['r', 'v'],
-                    'l' => ['v', 'p'],
-                    'v' => ['s', 'r']}
+GAME_LOGIC_HASH = {'scissors' => ['paper', 'lizard'],
+                    'rock' => ['scissors', 'lizard'],
+                    'paper' => ['rock', 'spock'],
+                    'lizard' => ['spock', 'paper'],
+                    'spock' => ['scissors', 'rock']}
 
 def prompt(message)
   Kernel.puts("=> #{message}")
@@ -35,10 +33,8 @@ def print_game_tutorial
   smashes scissors decapitates lizard eats paper disproves Spock vaporizes 
   rock crushes scissors.
 
-  You will type the first letter of your choice, except for Spock, where
-  you will type "v" because he is a Vulcan!
-
-  So type s for scissors, r for rock, p for paper, l for lizard, and v for Spock!
+  You may type the full word or the first letter of your choice, except for 
+  Spock, where you will type "sp".
 
   Whichever player first wins three games, wins the match and becomes the Grand Champion.
 
@@ -46,6 +42,17 @@ def print_game_tutorial
 
   TUTORIAL
 end
+
+def translate_users_move(move)
+  case move
+  when 'r' then 'rock'
+  when 'p' then 'paper'
+  when 's' then 'scissors'
+  when 'l' then 'lizard'
+  when 'sp' then 'spock'
+  else move
+  end
+end  
 
 def win?(first, second)
   GAME_LOGIC_HASH[first].include?(second)
@@ -110,19 +117,20 @@ loop do
   loop do
     choice = ''
     loop do
-      prompt("Choose one: #{VALID_CHOICES.join(', ')}")
-      choice = Kernel.gets().chomp()
+      prompt("Choose one: #{VALID_MOVES.join(', ')}")
+      choice = Kernel.gets().chomp().downcase
 
-      if VALID_CHOICES.include?(choice)
+      if VALID_MOVES.include?(choice) || VALID_MOVE_ABBREVIATIONS.include?(choice)
         break
       else
         prompt("That's not a valid choice.")
       end
     end
 
-    computer_choice = VALID_CHOICES.sample
+    choice = translate_users_move(choice)
+    computer_choice = VALID_MOVES.sample
 
-    prompt("You chose: #{USER_INPUT_TRANSLATION[choice]}; Computer chose: #{USER_INPUT_TRANSLATION[computer_choice]}")
+    prompt("You chose: #{choice}; Computer chose: #{computer_choice}")
 
     display_results(choice, computer_choice, scoring_array)
     display_score(scoring_array)
