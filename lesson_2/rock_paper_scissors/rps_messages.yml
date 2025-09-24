@@ -1,0 +1,27 @@
+english:
+  computer_string: "Computer"
+  you_string: "You"
+  welcome: "Welcome to Rock Paper Scissors Lizard Spock!"
+  tutorial_prompt: "Would you like a game tutorial?"
+  no_tutorial: "Okay, on to the game!"
+  game_start_prompt: "Choose one: rock, paper, scissors, lizard, spock"
+  move_validation_fail: "That's not a valid choice."
+  players_moves_summary: "You chose: %{choice}; Computer chose: %{computer_choice}"
+  player_wins: "You won!"
+  computer_wins: "Computer won!"
+  tie: "It's a tie!"
+  score_tally: "Your score: %{player_score}; Computer score: %{computer_score}"
+  declare_champion: "%{champion} won the match! Congratulations to the Grand Champion!"
+  play_again_prompt: "Do you want to play again?"
+  farewell: "Thank you for playing. Good bye!"
+  print_tutorial: |
+    In this game, scissors cuts paper covers rock crushes lizard poisons Spock
+    smashes scissors decapitates lizard eats paper disproves Spock vaporizes 
+    rock crushes scissors.
+
+    You may type the full word or the first letter of your choice, except for 
+    Spock, where you will type "sp".
+
+    Whichever player first wins three games, wins the match and becomes the Grand Champion.
+
+    Have fun!
